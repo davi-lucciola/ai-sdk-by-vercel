@@ -13,6 +13,8 @@ import { useChat } from '@ai-sdk/react'
 export const ChatContainer = () => {
     const { 
         messages, 
+        setMessages,
+        reload,
         input, 
         status,
         stop,
@@ -21,6 +23,10 @@ export const ChatContainer = () => {
     } = useChat();
 
     const isLoading = status == 'submitted' || status == 'streaming';
+
+    function removeMessage(messageId) {
+        setMessages(messages.filter(message => message.id != messageId))
+    }
 
     return (
         <section className={styles.container}>
@@ -31,7 +37,7 @@ export const ChatContainer = () => {
                         key={msg.id}
                         message={msg.content}
                         isUser={msg.role == 'user'} 
-                        onRemove={() => console.log('remove message', msg.id)}
+                        onRemove={() => removeMessage(msg.id)}
                     />
                 ))}
 
@@ -44,6 +50,7 @@ export const ChatContainer = () => {
                     </Button>
                 </div>
             )}
+            {(!isLoading && messages.length > 0) && <RetryButton onClick={reload} />}
             <ChatForm 
                 input={input}
                 handleInputChange={handleInputChange}
