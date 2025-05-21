@@ -18,6 +18,7 @@ export const ChatContainer = () => {
         input, 
         status,
         stop,
+        error,
         handleInputChange, 
         handleSubmit 
     } = useChat();
@@ -50,6 +51,7 @@ export const ChatContainer = () => {
                     </Button>
                 </div>
             )}
+            {error && (<p>Ops! Alguma coisa deu errado!</p>)}
             {(!isLoading && messages.length > 0) && <RetryButton onClick={reload} />}
             <ChatForm 
                 input={input}
